@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090d12">
+  <title>ORBE — Plaza interactiva</title>
+  <link rel="stylesheet" href="./inde.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="./plaza.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="ORBE, inicio">
+        <span class="brand-mark">O</span>
+        <span>ORBE / STUDIO</span>
+      </a>
+      <div class="top-note"><span class="live-dot"></span> Experiencia interactiva</div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="title">
+        <div class="eyebrow">Modelo 3D interactivo</div>
+        <h1 id="title">Plaza<span>en órbita.</span></h1>
+        <p class="description">Explora el modelo tridimensional. Arrastra para girar, desplázate para acercar y elige un tono para personalizarlo.</p>
+
+        <div class="controls" aria-label="Controles del modelo">
+          <div class="control-heading">
+            <span>Personaliza el modelo</span>
+            <span class="control-caption">ELIGE UN TONO</span>
+          </div>
+          <div class="swatches" role="group" aria-label="Color del modelo">
+            <button class="swatch" style="--swatch:#a7f36a" data-color="#a7f36a" aria-label="Verde lima" aria-pressed="true" type="button"></button>
+            <button class="swatch" style="--swatch:#83d9ef" data-color="#83d9ef" aria-label="Azul cielo" aria-pressed="false" type="button"></button>
+            <button class="swatch" style="--swatch:#d4a0ff" data-color="#d4a0ff" aria-label="Lila" aria-pressed="false" type="button"></button>
+            <button class="swatch" style="--swatch:#ff9c78" data-color="#ff9c78" aria-label="Coral" aria-pressed="false" type="button"></button>
+          </div>
+          <div class="control-divider"></div>
+          <button class="spin-toggle" type="button" aria-pressed="true">
+            <span>Rotación automática</span>
+            <span class="toggle-track" aria-hidden="true"><span class="toggle-knob"></span></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="stage" aria-label="Visor 3D interactivo">
+        <div class="stage-glow"></div>
+        <canvas id="model-viewer" aria-label="Modelo tridimensional de plazaCasco"></canvas>
+        <p class="model-status" role="status" aria-live="polite">Cargando plazaCasco.glb…</p>
+        <div class="stage-label"><span>01</span> — Cargando modelo</div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>ORBE © 2025</span>
+      <span class="footer-hint"><span class="mouse-icon">↔</span> ARRASTRA PARA EXPLORAR</span>
+    </footer>
+  </div>
+</body>
+</html>
