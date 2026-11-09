@@ -115,7 +115,7 @@ try {
   animationFrame = requestAnimationFrame(animate);
 
   new GLTFLoader().load(
-    "./plazaCasco.glb",
+    "./plazaCasco2.glb",
     (gltf) => {
       try {
         prepareModel(gltf.scene);
@@ -128,7 +128,7 @@ try {
     (event) => {
       if (event.total) {
         const progress = Math.round((event.loaded / event.total) * 100);
-        setStatus(`Cargando plazaCasco.glb… ${progress}%`);
+        setStatus(`Cargando plazaCasco2.glb… ${progress}%`);
       }
     },
     (error) => {
