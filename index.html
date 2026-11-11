@@ -1,68 +1,174 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090d12">
-  <title>ORBE — Plaza interactiva</title>
-  <link rel="stylesheet" href="./inde.css">
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
-      }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gobierno Autónomo Municipal de Oruro</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+        "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.7.0/build/index.module.js"
     }
-  </script>
-  <script type="module" src="./plaza.js"></script>
+}
+</script>
+
+<link rel="stylesheet" href="plaza.css">
 </head>
+
 <body>
-  <div class="page">
-    <header class="topbar">
-      <a class="brand" href="#" aria-label="ORBE, inicio">
-        <span class="brand-mark">O</span>
-        <span>ORBE / STUDIO</span>
-      </a>
-      <div class="top-note"><span class="live-dot"></span> Experiencia interactiva</div>
-    </header>
 
-    <main>
-      <section class="intro" aria-labelledby="title">
-        <div class="eyebrow">Modelo 3D interactivo</div>
-        <h1 id="title">Plaza<span>en órbita.</span></h1>
-        <p class="description">Explora el modelo tridimensional. Arrastra para girar, desplázate para acercar y elige un tono para personalizarlo.</p>
+<div id="contenedor"></div>
+<div id="cargando">Preparando la experiencia...</div>
 
-        <div class="controls" aria-label="Controles del modelo">
-          <div class="control-heading">
-            <span>Personaliza el modelo</span>
-            <span class="control-caption">ELIGE UN TONO</span>
-          </div>
-          <div class="swatches" role="group" aria-label="Color del modelo">
-            <button class="swatch" style="--swatch:#a7f36a" data-color="#a7f36a" aria-label="Verde lima" aria-pressed="true" type="button"></button>
-            <button class="swatch" style="--swatch:#83d9ef" data-color="#83d9ef" aria-label="Azul cielo" aria-pressed="false" type="button"></button>
-            <button class="swatch" style="--swatch:#d4a0ff" data-color="#d4a0ff" aria-label="Lila" aria-pressed="false" type="button"></button>
-            <button class="swatch" style="--swatch:#ff9c78" data-color="#ff9c78" aria-label="Coral" aria-pressed="false" type="button"></button>
-          </div>
-          <div class="control-divider"></div>
-          <button class="spin-toggle" type="button" aria-pressed="true">
-            <span>Rotación automática</span>
-            <span class="toggle-track" aria-hidden="true"><span class="toggle-knob"></span></span>
-          </button>
+<nav>
+    <div class="logo">ORURO</div>
+    <div>
+        <a href="index.html">INICIO</a>
+        <a href="cultura.html">CULTURA</a>
+    </div>
+</nav>
+
+<section id="portada">
+    <div class="contenido">
+        <h3>Patrimonio Histórico</h3>
+        <h1>MONUMENTO AL CASCO DEL MINERO</h1>
+        <p>
+            Símbolo de la identidad minera de Oruro.
+            Explora este espacio y conoce parte de nuestra
+            historia y cultura.
+        </p>
+        <div class="botones-portada">
+            <button onclick="iniciarExploracion(true)">🎵 Entrar con música</button>
+            <button class="btn-sec" onclick="iniciarExploracion(false)">🔇 Entrar sin música</button>
         </div>
-      </section>
+    </div>
+</section>
 
-      <section class="stage" aria-label="Visor 3D interactivo">
-        <div class="stage-glow"></div>
-        <canvas id="model-viewer" aria-label="Modelo tridimensional de plazaCasco"></canvas>
-        <p class="model-status" role="status" aria-live="polite">Cargando plazaCasco.glb…</p>
-        <div class="stage-label"><span>01</span> — Cargando modelo</div>
-      </section>
-    </main>
+<div id="instrucciones">
+    <b>W A S D / Flechas táctiles</b> Mover |
+    <b>Shift</b> Correr |
+    <b>Espacio</b> Saltar |
+    <b>Arrastrar mouse</b> Cámara |
+    <b>Rueda</b> Zoom |
+    <b>E</b> Información / Casco |
+    <b>H C S L</b> Animales (cerca de ellos) |
+    <b>1 2 3 4</b> Día / Tarde / Noche / Auto |
+    <b>5-9</b> Vistas de cámara | <b>0</b> Volver al personaje |
+    <b>P</b> Coordenadas |
+    <b>ESC</b> Pausa
+</div>
 
-    <footer class="footer">
-      <span>ORBE © 2025</span>
-      <span class="footer-hint"><span class="mouse-icon">↔</span> ARRASTRA PARA EXPLORAR</span>
-    </footer>
-  </div>
+<div id="controlesMoviles" aria-label="Controles para mover al personaje">
+    <button type="button" class="movil-arriba" data-tecla="KeyW" aria-label="Avanzar">▲</button>
+    <button type="button" class="movil-izquierda" data-tecla="KeyA" aria-label="Mover a la izquierda">◀</button>
+    <button type="button" class="movil-abajo" data-tecla="KeyS" aria-label="Retroceder">▼</button>
+    <button type="button" class="movil-derecha" data-tecla="KeyD" aria-label="Mover a la derecha">▶</button>
+</div>
+
+<div id="coords"></div>
+
+<div id="panelAmbiente">
+    <button class="amb-btn" data-amb="dia" tabindex="-1">☀️ Día</button>
+    <button class="amb-btn" data-amb="tarde" tabindex="-1">🌇 Tarde</button>
+    <button class="amb-btn" data-amb="noche" tabindex="-1">🌙 Noche</button>
+    <button class="amb-btn" data-amb="auto" tabindex="-1">🔄 Auto</button>
+</div>
+
+<div id="panelVistas">
+    <button class="vista-btn" data-vista="Digit5" tabindex="-1">5 · Arriba</button>
+    <button class="vista-btn" data-vista="Digit6" tabindex="-1">6 · Frente</button>
+    <button class="vista-btn" data-vista="Digit7" tabindex="-1">7 · Lado</button>
+    <button class="vista-btn" data-vista="Digit8" tabindex="-1">8 · Atrás</button>
+    <button class="vista-btn" data-vista="Digit9" tabindex="-1">9 · Panorama</button>
+    <button class="vista-btn" data-vista="Digit0" tabindex="-1">0 · Personaje</button>
+</div>
+
+<div id="ytPlayer"></div>
+<button id="btnMusica" tabindex="-1">🔇 Música apagada</button>
+
+<div id="avisoAnimal">
+    <span class="tecla" id="avisoLetra">H</span>
+    <div>
+        <span id="avisoNombre">Hormiga</span>
+        <small>Presiona la tecla o haz clic</small>
+    </div>
+</div>
+
+<div id="marcadoresDestinos" aria-label="Puntos de interés">
+    <button class="destino-marcador" type="button" data-marcador="hormiga" aria-label="Ver Hormiga">
+        <span class="destino-punto"></span><span class="destino-etiqueta">Hormiga</span>
+    </button>
+    <button class="destino-marcador" type="button" data-marcador="serpiente" aria-label="Ver Serpiente">
+        <span class="destino-punto"></span><span class="destino-etiqueta">Serpiente</span>
+    </button>
+    <button class="destino-marcador" type="button" data-marcador="sapo" aria-label="Ver Sapo">
+        <span class="destino-punto"></span><span class="destino-etiqueta">Sapo</span>
+    </button>
+    <button class="destino-marcador" type="button" data-marcador="lagarto" aria-label="Ver Lagarto">
+        <span class="destino-punto"></span><span class="destino-etiqueta">Lagarto</span>
+    </button>
+    <button class="destino-marcador" type="button" data-marcador="casco" aria-label="Ver Casco del Minero">
+        <span class="destino-punto"></span><span class="destino-etiqueta">Casco del Minero</span>
+    </button>
+</div>
+
+<div id="menuDestinos">
+    <button id="btnMenuDestinos" type="button" aria-expanded="false" aria-controls="listaDestinos">
+        Ir a un lugar <span aria-hidden="true">▾</span>
+    </button>
+    <div id="listaDestinos" hidden>
+        <button type="button" data-destino="sapo">Sapo</button>
+        <button type="button" data-destino="lagarto">Lagarto</button>
+        <button type="button" data-destino="hormiga">Hormiga</button>
+        <button type="button" data-destino="serpiente">Serpiente</button>
+        <button type="button" data-destino="casco">Casco del Minero</button>
+        <p id="estadoDestinos" role="status" aria-live="polite"></p>
+    </div>
+</div>
+
+<div id="visor">
+    <div class="visor-caja">
+        <div class="visor-cabecera">
+            <h2 id="visorTitulo">Animal</h2>
+            <button onclick="cerrarVisor()">Cerrar (ESC)</button>
+        </div>
+        <div class="visor-cuerpo">
+            <div id="visorCanvas">
+                <div id="visorEstado">Cargando modelo 3D...</div>
+            </div>
+            <div id="visorInfo"></div>
+        </div>
+        <div class="visor-pie">Arrastra para girar · Rueda para acercar o alejar</div>
+    </div>
+</div>
+
+<div id="panelInfo">
+    <h2>Monumento al Casco del Minero</h2>
+    <p>
+        El casco del minero representa el esfuerzo, la historia
+        y la identidad de los trabajadores mineros de Oruro.
+        Es un símbolo importante de nuestra cultura.
+    </p>
+    <br>
+    <button onclick="cerrarInformacion()">Cerrar</button>
+</div>
+
+<div id="pausa">
+    <div>
+        <h1>EXPLORACIÓN PAUSADA</h1>
+        <button onclick="reanudar()">Continuar explorando</button>
+    </div>
+</div>
+
+<script type="module" src="plazaCasco.js"></script>
+
 </body>
 </html>
